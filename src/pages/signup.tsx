@@ -1,8 +1,33 @@
-import React from 'react'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase/config';
 
 export default function signup() {
+const navigate = useNavigate();
+const[email, setEmail] = useState<string>('');
+const[password, setPassword] = useState<string>('');
+const[error, setError] = useState<string>('');
+
+
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
+e.preventDefault();
+
+try{
+  await createUserWithEmailAndPassword(auth, email, password);
+  navigate('/');
+  console.log("se ha redireccionado correctamente")
+}catch(error){
+  setError(error.message)
+  console.log(error)
+}
+
+};
+
+
   return (
-    <form>
+    <form onSubmit={handleSubmit} >
+      {error && error}
         <div className="hero min-h-screen bg-base-200">
   <div className="hero-content flex-col ">
     <div className="text-center">
@@ -15,13 +40,13 @@ export default function signup() {
           <label className="label">
             <span className="label-text">Email</span>
           </label>
-          <input type="email" placeholder="email" className="input input-bordered" required />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" className="input input-bordered" required />
         </div>
         <div className="form-control">
           <label className="label">
             <span className="label-text">Password</span>
           </label>
-          <input type="password" placeholder="password" className="input input-bordered" required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" className="input input-bordered" required />
         </div>
         <div className="form-control mt-6">
           <button className="btn btn-primary">SIGNUP</button>

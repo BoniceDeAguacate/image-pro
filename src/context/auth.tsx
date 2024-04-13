@@ -18,7 +18,7 @@ interface AuthProviderProps{
 }
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) =>{
     
-    const [user, setUser] = useState<User | null>('hola');
+    const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false );
 
     useEffect(() => {
